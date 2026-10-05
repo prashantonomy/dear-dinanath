@@ -201,3 +201,35 @@ clips — verified at 1.6×. The English apparatus size is fixed. Steps are
   (that would break Devanagari shaping) — the glyphs stay one solid `ink`.
 - Layout reserves a full register above and below the chant line so svara marks
   never clip, even at the 1.6× max text size.
+
+---
+
+## 7. The Chamakam memory lab (`/chamakam`) — a deliberate exception
+
+One page opts out of everything above. The Chamakam lab is a futuristic,
+instrument-like study tool with its own page-scoped system, so it never leaks
+into the rest of the site:
+
+- **Where it lives.** Styles in [`src/app/chamakam/chamakam.css`](src/app/chamakam/chamakam.css)
+  (all classes `ck-*`, tokens `--ck-*` on `.ck`), fonts in
+  [`src/app/chamakam/fonts.ts`](src/app/chamakam/fonts.ts), components in
+  `src/components/chamakam/`, text and logic in `src/lib/chamakam/`. While the
+  page is mounted, `body:has(.ck)` hides the site header and footer.
+- **Colour is pitch.** True black ground, ash-white ink, and three colours that
+  only ever mean a svara: flame `#ff8a1f` (svarita ॑, lifts), water `#3ab0ff`
+  (anudātta ॒, dips), ember `#ff3d6e` (dīrgha svarita ᳚, lifts and holds).
+- **Type.** Anybody (one Latin family; its 50–150 width axis gives wide display
+  lines and condensed readouts) and Noto Sans Devanagari (it carries ॑ ॒ ᳚ ꣳ ꣴ).
+- **Syllables, not marks.** The lab colours whole aksharas and draws a three-lane
+  pitch staff under each. Splits happen only at akshara boundaries
+  (`src/lib/chamakam/svara.ts`), never inside a cluster, so shaping is intact.
+  Note that in Taittirīya texts ॑ marks the **svarita**; udātta is unmarked.
+- **Encoding.** Svara marks follow anusvāra/visarga (`गिरः॑`, not `गिर॑ः`), or
+  browsers draw a dotted circle. The text is generated from a transcription and
+  cross-checked mark by mark; see the header of `src/lib/chamakam/text.ts`.
+- **Sound.** Plain piano notes, never a sung or "poetic" voice: dip (anudātta
+  ॒) is C4, level is D4, lift (svarita ॑) is E4, and the held lift (᳚) stays on
+  E for two thirds of its length, then drops to D. Every note is struck and
+  stopped dead just before the next, with no glide, swell or reverb tail, so the
+  pitch steps read as steps (`src/lib/chamakam/tone.ts`). The optional drone
+  sits on D.
